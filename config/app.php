@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         \FidelAPI\ServiceProvider::class,
+        JeroenNoten\LaravelAdminLte\ServiceProvider::class,
 
         /*
          * Application Service Providers...
