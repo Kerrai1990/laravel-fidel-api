@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use FidelAPI\FidelAPI;
-use Illuminate\Support\Facades\Cache;
 
-class ProgramController extends Controller
+class CardController extends Controller
 {
 
     protected  $api;
 
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
         $this->api = app(FidelAPI::class);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,33 +24,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        Cache::forget('superadmin_programs');
-        if(Cache::get('superadmin_programs')) {
-            $programs = Cache::get('superadmin_programs');
-        } else {
-            $programs = $this->api->call("programs");
-
-            if($programs) {
-                $programs = $programs->items();
-            }
-
-            foreach($programs as $key => $index) {
-                $locations = $this->api->call("programs/".$index->id."/locations");
-                $hooks = $this->api->call('programs/'.$index->id.'/hooks');
-                if($locations) {
-                    $programs[$key]->locations = $locations->items();
-                }
-
-                if($hooks) {
-                    $programs[$key]->hooks = $hooks->items();
-                }
-            }
-
-            Cache::put('superadmin_programs', $programs, 10);
-        }
-
-        return view('admin.programs.index')
-            ->with('programs', $programs);
+        //
     }
 
     /**
@@ -61,7 +35,7 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response('here');
     }
 
     /**

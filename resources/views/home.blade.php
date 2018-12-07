@@ -67,9 +67,8 @@
                         data-company-name="Homewards"
                         data-key="pk_test_6446a8c0-40b2-4586-b731-1703d3daa1cb"
                         data-program-id="78fdee70-e611-4c24-a30d-5a57346cf4de"
-                        data-callback="https://2d9bffad.ngrok.io/card-linked"
+                        data-callback="callback"
                         data-country-code="GBR"
-                        data-metadata="metadata"
                         data-auto-open="false"
                         data-overlay-close="false"
                         data-background-color="#ffffff"
@@ -79,11 +78,49 @@
                         data-lang="en"
                         data-subtitle="Earn 1 point for every £1 spent online or in-store"
                         data-subtitle-color="#000000"
-                        data-privacy-url="https://yourcompany.com/privacy"
-                        data-delete-instructions="taping remove in your settings page."
+                        data-privacy-url=""
                         data-terms-color="#000000"
                         data-title="Link Card"
                         data-title-color="#000000">
+                </script>
+                <script>
+                    function callback(error, card) {
+
+                        if(error) {
+                            console.log('Card Link Error', error);
+                            return false;
+                        }
+
+                        if(card) {
+                            console.log('Card Linked Successfully', card);
+                            request('api/cards', card);
+                        }
+                    }
+
+                    var fetchingResource = null;
+
+                    function request (url, formData) {
+                        if(fetchingResource) {
+                            fetchingResource.abort();
+                        }
+                        fetchingResource = $.ajax({
+                            url: url,
+                            data: formData,
+                            cache: false,
+                            timeout: 15000,
+                            type: 'POST',
+                            beforeSend: function () {},
+                            complete: function () {
+                                fetchingResource = null;
+                            },
+                            error: function (error) {
+                                if (error.statusText !== "abort");
+                            },
+                            success: function (result) {
+                                console.log(result);
+                            }
+                        });
+                    }
                 </script>
 
             </div>

@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use FidelAPI\FidelAPI;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
-class ProgramController extends Controller
+class CardController extends Controller
 {
 
     protected  $api;
@@ -17,6 +18,12 @@ class ProgramController extends Controller
         $this->middleware('auth');
         $this->api = app(FidelAPI::class);
     }
+
+    public function cardLinked(Request $request)
+    {
+        Log::info('here');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,33 +31,20 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        Cache::forget('superadmin_programs');
-        if(Cache::get('superadmin_programs')) {
-            $programs = Cache::get('superadmin_programs');
+        if(Cache::get('superadmin_cards')) {
+            $cards = Cache::get('superadmin_cards');
         } else {
-            $programs = $this->api->call("programs");
+            $cards = $this->api->call("cards");
 
-            if($programs) {
-                $programs = $programs->items();
+            if($cards) {
+                $cards = $cards->items();
             }
 
-            foreach($programs as $key => $index) {
-                $locations = $this->api->call("programs/".$index->id."/locations");
-                $hooks = $this->api->call('programs/'.$index->id.'/hooks');
-                if($locations) {
-                    $programs[$key]->locations = $locations->items();
-                }
-
-                if($hooks) {
-                    $programs[$key]->hooks = $hooks->items();
-                }
-            }
-
-            Cache::put('superadmin_programs', $programs, 10);
+            Cache::put('superadmin_cards', $cards, 10);
         }
 
-        return view('admin.programs.index')
-            ->with('programs', $programs);
+        return view('admin.cards.index')
+            ->with('cards', $cards);
     }
 
     /**

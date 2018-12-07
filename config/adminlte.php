@@ -137,6 +137,13 @@ return [
 //            'label'       => 4,
 //            'label_color' => 'success',
         ],
+        [
+            'text' => 'Cards',
+            'url' => 'admin/cards',
+            'icon' => 'credit-card',
+//            'label'       => 4,
+//            'label_color' => 'success',
+        ],
 //        [
 //            'text' => 'Locations',
 //            'url' => 'admin/locations',

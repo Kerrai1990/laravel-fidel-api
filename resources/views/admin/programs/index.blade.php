@@ -22,6 +22,7 @@
                             <th>Name</th>
                             <th>Created</th>
                             <th>Locations</th>
+                            <th>Hooks</th>
                             <th>Transactions</th>
                             <th style="width: 40px">Active</th>
                         </tr>
@@ -47,9 +48,19 @@
                                         </ul>
                                     </td>
                                 @endif
+                                @if(isset($program->hooks))
+                                    <td>
+                                        <ul>
+                                            @foreach($program->hooks as $hook)
+                                                <li>
+                                                    {{ $hook->url }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                @endif
                                 <td>
-                                    <a href="{{ route('transactions.show', ['id' => $program->id]) }}">
-                                        <i class="btn btn-sm btn-success">£</i></a>
+                                    <a href="{{ route('transactions.show', ['id' => $program->id]) }}" class="btn btn-sm btn-success">View</a>
                                 </td>
                                 <td>
                                     <span class="badge bg-{{ $program->active ? "green" : "red" }}">&nbsp;</span>
